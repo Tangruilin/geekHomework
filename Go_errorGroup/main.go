@@ -14,7 +14,7 @@ func main() {
 	ctx := context.Background()
 	//根据上游的ctx确定一个下游存在的ctx
 	ctx, cancel := context.WithCancel(ctx)
-	//注册errgroup
+	//注册errgroup，这里的errCtx是用来传递退出信息的
 	g, errCtx := errgroup.WithContext(ctx)
 	//初始化一个http.server
 	server := &http.Server{
@@ -22,6 +22,8 @@ func main() {
 	}
 	//	起一个http server
 	g.Go(func() error {
+		//防止突然退出
+		defer cancel()
 		http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 			_, err := writer.Write([]byte("Hello World"))
 			if err != nil {
