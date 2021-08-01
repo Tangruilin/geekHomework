@@ -22,7 +22,7 @@ func main() {
 	}
 	//	起一个http server
 	g.Go(func() error {
-		//防止突然退出
+		//避免泄露
 		defer cancel()
 		http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 			_, err := writer.Write([]byte("Hello World"))
