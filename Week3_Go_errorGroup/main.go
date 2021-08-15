@@ -13,7 +13,7 @@ func main() {
 	// 定义一个上游的ctx
 	ctx := context.Background()
 	//根据上游的ctx确定一个下游存在的ctx
-	ctx, cancel:= context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(ctx)
 	//注册errgroup，这里的errCtx是用来传递退出信息的, errCtx是原来的context的一个下游包，因此在cancel方法执行的时候
 	//errCtx和ctx两个的Done()方法都会发送结束的信号，这样用来实现优雅地控制
 	g, errCtx := errgroup.WithContext(ctx)
